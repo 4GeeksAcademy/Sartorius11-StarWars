@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export const Navbar = () => {
+	//Code JS
 	return (
 		<nav className="navbar navbar-light bg-light">
 			<div className="container">
@@ -13,6 +14,12 @@ export const Navbar = () => {
 						<button className="btn btn-primary">Check the Context in action</button>
 					</Link>
 				</div>
+				<div className="ml-auto">
+					<Link to="/Contact-List">
+						<button className="btn btn-primary">Componente ContactList</button>
+					</Link>
+				</div>
+
 			</div>
 		</nav>
 	);
