@@ -27,7 +27,7 @@ export const ContactList = () => {
 
                 <div className="d-flex justify-content-end">
                     <Link to="/Add-contact">
-                        <button type="button" className="btn btn-success">Add Contact</button>
+                        <button type="button" className="btn btn-success mb-2">Add Contact</button>
                     </Link>
                 </div>
                 {store.contacts.map((iterator) => (
@@ -35,7 +35,7 @@ export const ContactList = () => {
                         <div className="row g-0">
                             <div className="col-md-4">
                                 <img src=
-                                    "https://preview.redd.it/0769yycpyni91.jpg?width=640&crop=smart&auto=webp&s=b8775aba8f28cf78a0d3172693ad9f956c44d04c"
+                                    "https://pics.craiyon.com/2024-09-09/dK09IL9lRnuVjo53ep6yaA.webp"
                                     className="img-fluid rounded-start w-100 h-100" alt="..." />
                             </div>
 

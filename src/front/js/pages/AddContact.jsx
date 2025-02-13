@@ -59,10 +59,10 @@ export const AddContact = () => {
                             <input type="text" className="form-control form-control-sm" id="colFormLabelSm" placeholder="Enter address"
                                 value={address} onChange={(event) => { setAddress(event.target.value) }} />
                         </div>
-                        <button type="submit" className="btn btn-primary mt-2" >Save</button>
+                        <button type="submit" className="btn btn-success mt-2" >Save</button>
                         <div className="d-flex justify-content-start">
                             <Link to="/contact-list">
-                                <span className="">Get back contact list</span>
+                                <button type="submit" className="btn btn-warning my-3">Get back to contacts</button>
                             </Link>
                         </div>
                     </div>

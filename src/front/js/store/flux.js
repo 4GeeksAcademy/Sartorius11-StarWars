@@ -3,7 +3,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			message: null,
 			contacts: [],
-			currentContacts: {}
+			currentContacts: {},
+			characters: [],
+			starships: [],
+			planets: [],
+
+			character: {},
+			planet: {},
+			starship: {},
+			favorites: [],
+
 
 		},
 		actions: {
@@ -75,15 +84,98 @@ const getState = ({ getStore, getActions, setStore }) => {
 					},
 					body: JSON.stringify(dataToSend),
 				};
-				const response = await fetch( uri, options );
+				const response = await fetch(uri, options);
 				if (!response.ok) {
 					console.log("Error:", response.status, response.statusText);
 					return;
 				}
 				getActions().getContacts();
 				setStore({ currentContacts: {} });
-			}
+			},
+			getCharacters: async () => {
 
+
+				const uri = `${process.env.STARWARS_URL}people/`;
+				const options = {
+					method: 'GET'
+				}
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.error('Error', response.status, response.statusText);
+					return;
+				}
+				const data = await response.json();
+
+				setStore({ characters: data.results })
+			},
+
+			getStarships: async () => {
+
+				const uri = `${process.env.STARWARS_URL}starships`;
+				const options = {
+					method: 'GET'
+				}
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.error('Error', response.status, response.statusText);
+					return;
+				}
+				const data = await response.json();
+
+				setStore({ starships: data.results });
+			},
+			getPlanets: async () => {
+
+
+				const uri = `${process.env.STARWARS_URL}planets/`;
+				const options = {
+					method: 'GET'
+				}
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.error('Error', response.status, response.statusText);
+					return;
+				}
+				const data = await response.json();
+
+				setStore({ planets: data.results })
+			},
+			getCharacter: async (uid) => {
+				const uri = `${process.env.STARWARS_URL}people/${uid}`;
+				const options = { method: "GET" };
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log("Error:", response.status, response.statusText);
+					return;
+				}
+				const data = await response.json();
+				setStore({ character: data.result.properties });
+			},
+
+			getStarship: async (uid) => {
+				const uri = `${process.env.STARWARS_URL}starships/${uid}`;
+				const options = { method: "GET" };
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log("Error:", response.status, response.statusText);
+					return;
+				}
+				const data = await response.json();
+				console.log(data);
+				setStore({ starship: data.result.properties });
+			},
+			getPlanet: async (uid) => {
+				const uri = `${process.env.STARWARS_URL}planets/${uid}`;
+
+				const options = { method: "GET" };
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log("Error:", response.status, response.statusText);
+					return;
+				}
+				const data = await response.json();
+				setStore({ planet: data.result.properties });
+			},
 		}
 	};
 };
