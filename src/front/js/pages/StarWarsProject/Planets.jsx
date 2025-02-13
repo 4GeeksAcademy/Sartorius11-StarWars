@@ -24,7 +24,7 @@ export const Planets = () => {
                                 <h5 className="card-title fw-bold">{item.name}</h5>
                                 <div className="d-flex justify-content-center gap-3 mt-3">
                                     <button className="btn btn-secondary " onClick={() => handleDetails(item)} >Details</button>
-                                    <button className="btn btn-outline-danger rounded-2 ">
+                                    <button className="btn btn-outline-danger rounded-2" onClick={() => actions.addToFavorites(item)}>
                                         <i className="fa-regular fa-heart fa-xl"></i>
                                     </button>
                                 </div>

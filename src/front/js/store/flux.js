@@ -11,8 +11,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			character: {},
 			planet: {},
 			starship: {},
-			favorites: [],
-
+			favorites: []
 
 		},
 		actions: {
@@ -56,7 +55,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				getActions().getContacts();
 
 			},
-
 			deleteContact: async (id) => {
 				const host = 'https://playground.4geeks.com/contact';
 				const user = 'Sartorius11';
@@ -108,7 +106,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				setStore({ characters: data.results })
 			},
-
 			getStarships: async () => {
 
 				const uri = `${process.env.STARWARS_URL}starships`;
@@ -176,6 +173,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const data = await response.json();
 				setStore({ planet: data.result.properties });
 			},
+			addToFavorites: async (item) => {
+				const store = getStore()
+				if (!store.favorites.includes(item)) {
+					setStore({ ...store, favorites: [...store.favorites, item] });
+				}
+			}
 		}
 	};
 };
