@@ -25,11 +25,11 @@ export const Navbar = () => {
 						<Link to="/Contact-List">
 							<button className="btn btn-primary">Contact List</button>
 						</Link>
-						<Link to="">
+						<Link to="/favorites">
 							<button type="button" className="btn btn-danger position-relative">
 								Favorites
 								<span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">
-									99+
+
 									<span className="visually-hidden">unread messages</span>
 								</span>
 							</button>

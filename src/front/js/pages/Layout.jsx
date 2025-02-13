@@ -26,6 +26,7 @@ import { GetCharacter } from "./StarWarsProject/GetCharacter.jsx";
 
 import { GetPlanet } from "./StarWarsProject/GetPlanet.jsx";
 import { GetStartships } from "./StarWarsProject/GetStarships.jsx";
+import { Favorites } from "./StarWarsProject/Favorites.jsx";
 
 //create your first component
 const Layout = () => {
@@ -41,6 +42,9 @@ const Layout = () => {
                 <ScrollToTop>
                     <Navbar />
                     <Routes>
+
+                        <Route element={<Favorites />} path="/favorites" />
+
                         <Route element={<GetCharacter />} path="/get-character" />
                         <Route element={<GetPlanet />} path="/get-planet" />
                         <Route element={<GetStartships />} path="/get-starships" />
