@@ -51,7 +51,7 @@ export const EditContact = () => {
                         value={address} onChange={(event) => { setAddress(event.target.value) }} />
                 </div>
                 <div className="row d-flex justify-content-center">
-                    <button type="button" className="btn btn-primary col-6 mb-3" onClick={handleSave}>Save</button>
+                    <button type="button" className="btn btn-secondary col-6 mb-3" onClick={handleSave}>Save</button>
                     <Link to="/contact-list">
                         <button type="submit" className="btn btn-warning mb-3">Get back to contacts</button>
                     </Link>
