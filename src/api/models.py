@@ -10,6 +10,7 @@ class Users(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), nullable=False)
     is_active = db.Column(db.Boolean(), nullable=False)
+    is_admin = db.Column(db.Boolean())
     first_name = db.Column(db.String())
     last_name = db.Column(db.String())
 
@@ -21,6 +22,7 @@ class Users(db.Model):
         return {'id': self.id,
                 'email': self.email,
                 'is_active': self.is_active,
+                'is_admin' : self.is_admin,
                 'first_name': self.first_name,
                 'last_name': self.last_name}
 
@@ -47,7 +49,6 @@ class Followers(db.Model):
     follower_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     follower_to = db.relationship('Users', foreign_keys=[follower_id], backref=db.backref('follower_to'))
 
-    
     
 class Comments(db.Model):
     id = db.Column(db.Integer, primary_key=True)

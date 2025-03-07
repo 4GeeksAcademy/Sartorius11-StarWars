@@ -3,6 +3,9 @@ from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from api.models import db, Users, Characters, CharactersFavorites, Planets, PlanetFavorites
 import requests
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import get_jwt_identity
 
 api = Blueprint('api', __name__)
 CORS(api)  # Allow CORS requests to this API
@@ -24,6 +27,40 @@ def get_users():
     results = [row.serialize() for row in rows]
     response_body['results'] = results
     response_body['message'] = 'Listado de usuarios'
+    return response_body, 200
+
+# Create a route to authenticate your users and return JWTs. The
+# create_access_token() function is used to actually generate the JWT.
+@api.route("/login", methods=["POST"])
+def login():
+    response_body = {}
+    data = request.json
+    email = request.json.get("email", None)
+    password = data.get("password", None)
+    row = db.session.execute(db.select(Users).where(Users.email==email,Users.password==password, Users.is_active)).scalar()
+    # Si la consulta es exitosa, row tendra algo(por lo tanto es verdadero), sino devuelve NONE
+    if not row:
+        response_body['message'] = "Bad username or password"
+        return response_body, 401
+    user = row.serialize()
+    claims = {'user_id': user['id'],
+              'is_admin': user['is_admin']}
+    print(claims)
+    access_token = create_access_token(identity=email,additional_claims=claims)
+    response_body ['message'] = 'User Logged!'
+    response_body ['access_token'] = access_token
+    return response_body, 200
+
+
+# Protect a route with jwt_required, which will kick out requests
+# without a valid JWT present.
+@api.route("/protected", methods=["GET"])
+@jwt_required()
+def protected():
+    # Access the identity of the current user with get_jwt_identity
+    response_body = {}
+    current_user = get_jwt_identity()
+    response_body['message'] = f'User logged {current_user}'
     return response_body, 200
 
 
@@ -98,16 +135,6 @@ def get_user_favorite_planets(user_id):
     return response_body, 200
 
 
-# Listar todos los favoritos de personajes que pertenecen al usuario actual
-@api.route('/users/<int:user_id>/favorites-characters', methods=['GET'])
-def get_user_favorite_characters(user_id):
-    response_body = {}
-    rows = db.session.execute(db.select(CharactersFavorites).where(CharactersFavorites.user_id == user_id)).scalars()
-    results = [row.serialize() for row in rows]
-    response_body['results'] = results
-    response_body['message'] = f'Listado de personajes favoritos del usuario con id {user_id}'
-    return response_body, 200
-
 
 # Añadir un nuevo planeta favorito al usuario
 @api.route('/users/<int:user_id>/favorite-planets', methods=['POST'])
@@ -125,22 +152,6 @@ def add_favorite_planet(user_id):
     response_body['message'] = f'Planeta favorito añadido al usuario con id {user_id}'
     return response_body, 201
 
-
-# Añadir un nuevo personaje favorito al usuario
-@api.route('/users/<int:user_id>/favorite-characters', methods=['POST'])
-def add_favorite_character(user_id):
-    response_body = {}
-    data = request.json
-    character_id = data.get('character_id')
-    if not character_id:
-        response_body['message'] = 'El campo character_id es requerido'
-        return response_body, 400
-    favorite = CharactersFavorites(user_id=user_id, character_id=character_id)
-    db.session.add(favorite)
-    db.session.commit()
-    response_body['results'] = favorite.serialize()
-    response_body['message'] = f'Personaje favorito añadido al usuario con id {user_id}'
-    return response_body, 201
 
 
 # Eliminar un planeta favorito del usuario
@@ -160,18 +171,3 @@ def delete_favorite_planet(user_id, planet_id):
     return response_body, 200
 
 
-# Eliminar un personaje favorito del usuario
-@api.route('/users/<int:user_id>/favorite-characters/<int:character_id>', methods=['DELETE'])
-def delete_favorite_character(user_id, character_id):
-    response_body = {}
-    favorite = db.session.execute(db.select(CharactersFavorites).where(
-        CharactersFavorites.user_id == user_id,
-        CharactersFavorites.character_id == character_id
-    )).scalar()
-    if not favorite:
-        response_body['message'] = f'No se encontró el personaje favorito con id {character_id} para el usuario con id {user_id}'
-        return response_body, 404
-    db.session.delete(favorite)
-    db.session.commit()
-    response_body['message'] = f'Personaje favorito con id {character_id} eliminado del usuario con id {user_id}'
-    return response_body, 200
