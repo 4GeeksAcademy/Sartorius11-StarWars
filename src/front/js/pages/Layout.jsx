@@ -7,6 +7,7 @@ import ScrollToTop from "../component/ScrollToTop.jsx";
 import { BackendURL } from "../component/BackendURL.jsx";
 import { Navbar } from "../component/Navbar.jsx";
 import { Footer } from "../component/Footer.jsx";
+import { Alert } from "../component/Alert.jsx";
 
 import { ContactList } from "./ContactList.jsx";
 
@@ -27,6 +28,9 @@ import { GetCharacter } from "./StarWarsProject/GetCharacter.jsx";
 import { GetPlanet } from "./StarWarsProject/GetPlanet.jsx";
 import { GetStartships } from "./StarWarsProject/GetStarships.jsx";
 import { Favorites } from "./StarWarsProject/Favorites.jsx";
+import { Login } from "./Login.jsx";
+import { Register } from "./Register.jsx";
+import { Profile } from "./Profile.jsx";
 
 //create your first component
 const Layout = () => {
@@ -41,9 +45,11 @@ const Layout = () => {
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
                     <Navbar />
+                    <Alert />
                     <Routes>
 
                         <Route element={<Favorites />} path="/favorites" />
+                        <Route element={<Login />} path="/login" />
 
                         <Route element={<GetCharacter />} path="/get-character" />
                         <Route element={<GetPlanet />} path="/get-planet" />
@@ -55,6 +61,11 @@ const Layout = () => {
                         <Route element={<AddContact />} path="/add-contact" />
                         <Route element={<ContactList />} path="/contact-list" />
                         <Route element={<EditContact />} path="/edit-contact" contact-list />
+
+                        <Route element={<Register />} path="/register" />
+                        <Route element={<Login />} path="/login" />
+                        <Route element={<Profile />} path="/profile/" />
+
 
                         <Route element={<Home />} path="/" />
                         <Route element={<Demo />} path="/demo" />

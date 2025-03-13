@@ -1,20 +1,106 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			message: null,
+			selectedItem: {},
+			category: "",
 			contacts: [],
-			currentContacts: {},
 			characters: [],
-			starships: [],
 			planets: [],
-
-			character: {},
-			planet: {},
-			starship: {},
-			favorites: []
+			vehicles: [],
+			starships: [],
+			favorites: [],
+			posts: [],
+			user: "",
+			isLogged: false,
+			isAdmin: false,
+			alert: { text: '', visible: false, background: 'primary' },
 
 		},
 		actions: {
+
+			setUser: (newUser) => { setStore({ user: newUser }) },
+			setAlert: (newAlert) => { setStore({ alert: newAlert }) },
+			setIsLogged: (value) => { setStore({ isLogged: value }) },
+			setIsAdmin: (value) => { setStore({ isAdmin: value }) },
+			isUserLogged: () => {
+				const data = JSON.parse(localStorage.getItem('user'))
+				console.log(data);
+
+				if (data) {
+					setStore({
+						user: data.first_name,
+						isAdmin: data.is_admin,
+						isLogged: true,
+					})
+				}
+			},
+			logout: () => {
+				localStorage.removeItem('token');
+				localStorage.removeItem('user');
+				getActions().setAlert({ text: '', visible: false, background: 'primary' });
+				setStore({
+					user: '',
+					isLogged: false,
+					isAdmin: false
+				})
+			},
+			login: async (dataToSend) => {
+				const uri = `${process.env.BACKEND_URL}/api/login`;
+				const options = {
+					method: 'POST',
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(dataToSend)
+				};
+				// console.log(dataToSend);
+				const response = await fetch(uri, options)
+				if (!response.ok) {
+					// Tratar el error
+					console.log('error', response.status, response.statusText)
+					return
+				}
+				const data = await response.json();
+				console.log("esto es login", data);
+				setStore({
+					user: data.results,
+					isAdmin: data.results.is_admin,
+					isLogged: true,
+					alert: { text: data.message, visible: true, background: 'success' },
+				})
+				localStorage.setItem('token', data.access_token)
+				localStorage.setItem('user', JSON.stringify(data.results))
+			},
+			register: async (dataToSend) => {
+				const uri = `${process.env.BACKEND_URL}/api/register`;
+				const options = {
+					method: 'POST',
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(dataToSend)
+				};
+				// console.log(dataToSend);
+				const response = await fetch(uri, options)
+				if (!response.ok) {
+					// Tratar el error
+					console.log('error', response.status, response.statusText)
+					return
+				}
+				const data = await response.json();
+				console.log(data);
+				setStore({
+					user: data.results,
+					isAdmin: data.results.is_admin,
+					isLogged: true,
+					alert: { text: data.message, visible: true, background: 'success' },
+				})
+				localStorage.setItem('token', data.access_token)
+				localStorage.setItem('user', JSON.stringify(data.results))
+			},
+
+
+
 
 			setCurrentContact: (contact) => { setStore({ currentContacts: contact }) },
 
@@ -91,8 +177,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ currentContacts: {} });
 			},
 			getCharacters: async () => {
-
-
 				const uri = `${process.env.STARWARS_URL}people/`;
 				const options = {
 					method: 'GET'
@@ -107,8 +191,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ characters: data.results })
 			},
 			getStarships: async () => {
-
-				const uri = `${process.env.STARWARS_URL}starships`;
+				// localStorage.setItem("hola", 'ciao')
+				const uri = `${process.env.STARWARS_URL}starships/`;
+				console.log(uri)
 				const options = {
 					method: 'GET'
 				}
@@ -122,8 +207,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ starships: data.results });
 			},
 			getPlanets: async () => {
-
-
 				const uri = `${process.env.STARWARS_URL}planets/`;
 				const options = {
 					method: 'GET'
@@ -148,7 +231,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const data = await response.json();
 				setStore({ character: data.result.properties });
 			},
-
 			getStarship: async (uid) => {
 				const uri = `${process.env.STARWARS_URL}starships/${uid}`;
 				const options = { method: "GET" };
@@ -174,9 +256,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ planet: data.result.properties });
 			},
 			addToFavorites: async (item) => {
+
 				const store = getStore()
-				if (!store.favorites.includes(item)) {
+				if (!getStore().favorites.includes(item)) {
 					setStore({ ...store, favorites: [...store.favorites, item] });
+				}
+			},
+
+
+			setFavorites: (item) => {
+				const favorites = getStore().favorites
+
+				if (favorites.includes(item)) {
+					setStore({ favorites: favorites.filter((value) => item != value) })
+				} else {
+					setStore({ favorites: [...favorites, item] })
 				}
 			}
 		}
