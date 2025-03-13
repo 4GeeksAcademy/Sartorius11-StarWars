@@ -7,7 +7,7 @@ export const Starships = () => {
     const navigate = useNavigate();
 
     const handleDetails = async (starship) => {
-        console.log(starship);
+        
         await actions.getStarship(starship.uid)
         navigate("/get-starships");
     }

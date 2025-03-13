@@ -7,7 +7,7 @@ export const Profile = () => {
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user) {
-        return <p>Loading...</p>; // O redirigir a login si no hay usuario
+        return <p>Loading...</p>; 
     }
     const [firstName, setFirstName] = useState(user.first_name);
     const [lastName, setLastName] = useState(user.last_name);

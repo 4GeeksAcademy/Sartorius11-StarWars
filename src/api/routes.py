@@ -6,10 +6,17 @@ import requests
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import get_jwt
+
 
 api = Blueprint('api', __name__)
 CORS(api)  # Allow CORS requests to this API
 
+
+
+# STACK OVERFLOW
+# def cors():
+#     api.use(cors())
 
 # Endpoint de prueba
 @api.route('/hello', methods=['POST', 'GET'])
@@ -17,6 +24,34 @@ def handle_hello():
     response_body = {}
     response_body['message'] = "Hello! I'm a message that came from the backend"
     return response_body, 200
+
+@api.route('/edit-profile', methods=['PUT'])
+@jwt_required()
+def edit_profile():
+    response_body = {"hola": 'ciau'}
+    request_data = request.json
+    token_data = get_jwt()
+    response_body["token_data"] = token_data
+    response_body["request_data"] = request_data
+    row =  db.session.execute(db.select(Users).where(Users.id == token_data["user_id"])).scalar()
+    print("soy el row 1ero request data",request_data["isActive"])
+
+    print("soy el row ANTES", row.serialize())
+    
+    row.email = request_data["email"]
+    row.is_active = request_data["isActive"]
+    row.is_admin = request_data["isAdmin"]
+    row.first_name = request_data["firstName"]
+    row.last_name = request_data["lastName"]
+    db.session.commit()
+    print("soy el row DESPUES", row.serialize())
+    response_body["result"] = row.serialize()
+    
+    
+    return response_body, 200
+
+
+
 
 
 # Listar todos los usuarios
@@ -32,6 +67,7 @@ def get_users():
 
 @api.route("/login", methods=["POST"])
 def login():
+
     response_body = {}
     data = request.json
     email = request.json.get("email", None)

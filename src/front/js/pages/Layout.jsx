@@ -31,6 +31,7 @@ import { Favorites } from "./StarWarsProject/Favorites.jsx";
 import { Login } from "./Login.jsx";
 import { Register } from "./Register.jsx";
 import { Profile } from "./Profile.jsx";
+import { EditProfile } from "./EditProfile.jsx";
 
 //create your first component
 const Layout = () => {
@@ -64,7 +65,8 @@ const Layout = () => {
 
                         <Route element={<Register />} path="/register" />
                         <Route element={<Login />} path="/login" />
-                        <Route element={<Profile />} path="/profile/" />
+                        <Route element={<Profile />} path="/profile" />
+                        <Route element={< EditProfile />} path="/edit-profile" />
 
 
                         <Route element={<Home />} path="/" />

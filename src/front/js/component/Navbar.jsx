@@ -99,7 +99,7 @@ export const Navbar = () => {
 	const navigate = useNavigate();
 
 	const user = store.user
-	console.log("soy el consle", store.user)
+
 
 	const handleLog = () => {
 		if (store.isLogged) {
@@ -133,6 +133,9 @@ export const Navbar = () => {
 						<li className="nav-item">
 							<Link to='/planets' className="nav-link">Planets</Link>
 						</li>
+						<li className="nav-item">
+							<Link to='/edit-profile' className="nav-link">EDITAR PERFIL</Link>
+						</li>
 
 					</ul>
 				</div>
@@ -157,7 +160,7 @@ export const Navbar = () => {
 						</ul>
 					)}
 					<button id="btnGroupDrop1" type="button" className="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-						<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+						<span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
 							{store.favorites.length}
 						</span>
 						<i className="fa fa-heart text-light pointer"></i>

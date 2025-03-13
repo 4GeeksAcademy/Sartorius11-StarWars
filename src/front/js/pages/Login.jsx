@@ -6,7 +6,6 @@ export const Login = () => {
   const { actions } = useContext(Context);
   const [email, setEmail] = useState('hola@test.com');
   const [password, setPassword] = useState('1234');
-  const [checkMe, setCheckMe] = useState(false);
   const [viewPassword, setViewPassword] = useState(false);
   const navigate = useNavigate();
 

@@ -10,13 +10,31 @@ const getState = ({ getStore, getActions, setStore }) => {
 			starships: [],
 			favorites: [],
 			posts: [],
-			user: "",
+			user: {},
 			isLogged: false,
 			isAdmin: false,
 			alert: { text: '', visible: false, background: 'primary' },
 
 		},
 		actions: {
+			editProfile: async (dataToSend) => {
+				const token = localStorage.getItem("token")
+				console.log("data desde edit profile", dataToSend)
+				const uri = `${process.env.BACKEND_URL}/api/edit-profile`;
+				const options = {
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`
+					},
+					body: JSON.stringify(dataToSend)
+				}
+				const response = await fetch(uri, options)
+				const data = await response.json()
+				setStore({ user: data.result })
+				localStorage.setItem("user", JSON.stringify(data.result))
+				console.log("soy el response", data)
+			},
 
 			setUser: (newUser) => { setStore({ user: newUser }) },
 			setAlert: (newAlert) => { setStore({ alert: newAlert }) },
@@ -24,7 +42,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			setIsAdmin: (value) => { setStore({ isAdmin: value }) },
 			isUserLogged: () => {
 				const data = JSON.parse(localStorage.getItem('user'))
-				console.log(data);
+
 
 				if (data) {
 					setStore({
@@ -53,7 +71,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					},
 					body: JSON.stringify(dataToSend)
 				};
-				// console.log(dataToSend);
+
 				const response = await fetch(uri, options)
 				if (!response.ok) {
 					// Tratar el error
@@ -61,13 +79,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return
 				}
 				const data = await response.json();
-				console.log("esto es login", data);
+				console.log("soy data desde LOG IN",data)
 				setStore({
 					user: data.results,
 					isAdmin: data.results.is_admin,
 					isLogged: true,
 					alert: { text: data.message, visible: true, background: 'success' },
 				})
+				// console.log("esto es login", getStore().user)
 				localStorage.setItem('token', data.access_token)
 				localStorage.setItem('user', JSON.stringify(data.results))
 			},
@@ -80,15 +99,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 					},
 					body: JSON.stringify(dataToSend)
 				};
-				// console.log(dataToSend);
+
 				const response = await fetch(uri, options)
 				if (!response.ok) {
 					// Tratar el error
-					console.log('error', response.status, response.statusText)
+					console.log('Error', response.status, response.statusText)
 					return
 				}
 				const data = await response.json();
-				console.log(data);
+
 				setStore({
 					user: data.results,
 					isAdmin: data.results.is_admin,
@@ -193,7 +212,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getStarships: async () => {
 				// localStorage.setItem("hola", 'ciao')
 				const uri = `${process.env.STARWARS_URL}starships/`;
-				console.log(uri)
+
 				const options = {
 					method: 'GET'
 				}
@@ -240,7 +259,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return;
 				}
 				const data = await response.json();
-				console.log(data);
+
 				setStore({ starship: data.result.properties });
 			},
 			getPlanet: async (uid) => {
