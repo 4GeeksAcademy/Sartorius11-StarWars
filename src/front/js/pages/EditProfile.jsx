@@ -31,7 +31,7 @@ export const EditProfile = () => {
         //     "last_name": "asdjklnfasd"
         // }
         actions.editProfile(form)
-        // navigate("/user-profile")
+        navigate("/profile")
     };
     return (
         <div className="container mt-4 bg-light bg-opacity-25 text-center rounded">
@@ -64,10 +64,10 @@ export const EditProfile = () => {
                     <label className="form-check-label" htmlFor="exampleCheck1">Is Active</label>
                 </div>
                 <div className="d-grid gap-2 rounded mt-3 ">
-                    <button type="submit" className="btn btn-primary">Save</button>
+                    <button type="submit " className="btn btn-primary">Save</button>
                 </div>
                 <div className="d-flex align-content-start">
-                    <Link to="/" className="link-primary">or get back to your profile</Link>
+                    <Link to="/profile" className="link-primary">or go back to your profile</Link>
                 </div>
             </form>
         </div>

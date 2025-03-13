@@ -79,7 +79,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return
 				}
 				const data = await response.json();
-				console.log("soy data desde LOG IN",data)
+				console.log("soy data desde LOG IN", data)
 				setStore({
 					user: data.results,
 					isAdmin: data.results.is_admin,

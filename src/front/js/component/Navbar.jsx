@@ -133,9 +133,9 @@ export const Navbar = () => {
 						<li className="nav-item">
 							<Link to='/planets' className="nav-link">Planets</Link>
 						</li>
-						<li className="nav-item">
+						{/* <li className="nav-item">
 							<Link to='/edit-profile' className="nav-link">EDITAR PERFIL</Link>
-						</li>
+						</li> */}
 
 					</ul>
 				</div>
