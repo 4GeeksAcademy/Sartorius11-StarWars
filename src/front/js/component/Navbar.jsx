@@ -120,18 +120,27 @@ export const Navbar = () => {
 					<span className="navbar-toggler-icon"></span>
 				</button>
 				<div className="collapse navbar-collapse" id="navbarSupportedContent">
-					<ul className="navbar-nav me-auto mb-2 mb-lg-0">
-						<li className="nav-item">
-							<Link to='/contact-List' className="nav-link">Contact List</Link>
+					<ul className="navbar-nav me-auto mb-2 mb-lg-0 ">
+						<li className="nav-item mx-2">
+							<button className="btn btn-success">
+								<Link to='/contact-List' className="nav-link text-info-emphasis">Contact List</Link>
+							</button>
 						</li>
-						<li className="nav-item">
-							<Link to='/characters' className="nav-link">Characters</Link>
+						<li className="nav-item mx-2">
+							<button className="btn btn-danger">
+								<Link to='/characters' className="nav-link text-info-emphasis">Characters</Link>
+							</button>
 						</li>
-						<li className="nav-item">
-							<Link to='/starships' className="nav-link">Starships</Link>
+						<li className="nav-item mx-2">
+							<button className="btn btn-warning">
+								<Link to='/starships' className="nav-link text-info-emphasis">Starships</Link>
+							</button>
 						</li>
-						<li className="nav-item">
-							<Link to='/planets' className="nav-link">Planets</Link>
+						<li className="nav-item mx-2">
+
+							<button className="btn btn-light">
+								<Link to='/planets' className="nav-link text-warning">Planets</Link>
+							</button>
 						</li>
 						{/* <li className="nav-item">
 							<Link to='/edit-profile' className="nav-link">EDITAR PERFIL</Link>
