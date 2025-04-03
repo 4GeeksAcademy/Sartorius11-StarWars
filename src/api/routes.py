@@ -50,10 +50,6 @@ def edit_profile():
     
     return response_body, 200
 
-
-
-
-
 # Listar todos los usuarios
 @api.route('/users', methods=['GET'])
 def get_users():
